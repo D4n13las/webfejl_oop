@@ -7,9 +7,14 @@ function createRow(companion){
     const table = document.getElementById('companions');
     const tbody = table.querySelector('tbody');
     const tableRow = document.createElement('tr');
+    tableRow.id = companion.id
     tbody.appendChild(tableRow);
 
    // TODO 7
+   const fullName = createCell(tableRow)
+   fullName.innerText = companion.getName()
+    const area = createCell(tableRow)
+
 
     const action = createCell(tableRow)
     const button = document.createElement('button');

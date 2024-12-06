@@ -46,6 +46,15 @@ document.getElementById('product').addEventListener('submit',function(e){
 function initTable(){
 
    // TODO 6
+   for(let i = 0; i< companionList.length;i++){
+      const currentElement = companionList[i]
+      let companion = new Companion(i,currentElement.lastName,currentElement.firstName,currentElement.products)
+      factory.addMano(companion)
+      for(const per of currentElement.products){
+         companion.doHozzafuz(per)
+      }
+   }
+   console.log(factory)
 }
 
 

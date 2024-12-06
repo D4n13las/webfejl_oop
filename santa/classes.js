@@ -6,6 +6,7 @@ class Factory{
     } //
     addMano(mano){
         this.manokList.push(mano)
+        createRow(mano)
     }
 }
    
