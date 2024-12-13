@@ -57,7 +57,6 @@ function initTable(){
    console.log(factory)
 }
 
-
 initTable()
 
 /**
