@@ -20,7 +20,16 @@ class ArrayList{
         const actualis_hossz = this.#Count
         this.#obj[actualis_hossz] = Item;
         this.#Count++
-        
+        Object.defineProperty(
+            this, actualis_hossz, {
+                get:function(){
+                    return this.#obj[actualis_hossz]
+                },
+                set:function(value){
+                    this.#obj[actualis_hossz] = value
+                }
+            }
+        )
     }
     Clear(){
         this.#Count = 0
