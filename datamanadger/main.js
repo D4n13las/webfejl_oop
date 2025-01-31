@@ -63,4 +63,33 @@ class dataManager{
     }
 
 }
-class dataTable{}
+class dataTable{
+    /**
+     * @param {dataManager} dataManager
+     */
+    constructor(dataManager){
+        const table  = document.createElement("table")
+        document.body.appendChild(table)
+        const header = document.createElement("thead")
+        table.appendChild(header)
+        const tbody = document.createElement("tbody")
+        table.appendChild(tbody)
+        dataManager.setUpateCallback((person) => {
+            tbody.innerHTML = ""
+            for(const prs of person){
+                const sor = document.createElement("tr")
+                tbody.appendChild(sor)
+                const cella = document.createElement("td")
+                cella.innerText = prs.nev
+                sor.appendChild(cella)
+                const cella2 = document.createElement("td")
+                cella.innerText = prs.eletkor
+                sor.appendChild(cella2)
+            }
+        })
+
+        
+    }
+}
+const dataManager_obj = new dataManager([{eletkor:18,nev:"Sándor"},{eletkor:20,nev:"Nem sándor"},{eletkor:17,nev:"Feri"}])
+const dataTable2 = new dataTable(dataManager_obj)
