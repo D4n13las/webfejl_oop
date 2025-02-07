@@ -1,95 +1,129 @@
 /**
- * @typedef {{nev:String,eletkor:Number}} Person
- * @callback UpdateCallback
- * @param {} person
+ * @typedef {{nev:string,eletkor:number}} Person
+ * @callback Updatecallback
+ * @param {Person[]} person
  * @returns {void}
  */
-class dataManager{
+
+
+
+
+class Datamanager {
     /**
      * @type {Person[]}
      */
     #array
     /**
-     * @type {UpdateCallback}
-     */
-    #updateCallback
+     * @type {Updatecallback}
+     *
+     *  */   
+    
+    #updatecallback
     /**
      * 
-     * @param {Person[]} arrayTomb 
+     * @param {Person[]} array 
      */
-    constructor(arrayTomb = []){
-        this.#array = arrayTomb
-        this.#updateCallback = () => {}
-
+    constructor(array = []){
+        this.#array = []
+        this.#array = array
+        this.#updatecallback = ()=>{}
+        /**
+         * @param {}
+         */
+    }
+    setupdatecallback(callback){
+        this.#updatecallback=callback
+        this.#updatecallback(this.#array)
     }
     /**
-     * 
-     * @param {UpdateCallback} callback 
-     */
-    setUpateCallback(callback){
-        this.#updateCallback = callback
-        this.#updateCallback(this.#array)
+         * 
+         * @param {Person} item
+         */
+    add(item){
+        this.#array.push(item)
+        this.#updatecallback(this.#array)
     }
-    /**
-     * @param {Person[]} sor
-     */
-    add(sor){
-        this.#array.push(sor)
-        this.#updateCallback(this.#array)
-    }
-    /**
-     * @param {String} nev 
-     */
-    filterName(nev){
-        const resoult = []
-        for(let i= 0;i<this.#array.length; i++){
-            if(nev == this.#array[i]){
-                resoult.push(this.#array[i])
-            }
+    
+    filter_name(asd){
+        const result = []
+        for(const elem of this.#array){
+           if( elem.nev===asd){
+            result.push(elem)
+           }
         }
-        this.#updateCallback(resoult)
+        this.#updatecallback(result)
     }
-    /**
-     * @param {Number} age 
-     */
-    filterAge(age){
-        const resoult = []
-        for(let i= 0;i<this.#array.length; i++){
-            if(age == this.#array[i]){
-                resoult.push(this.#array[i])
-            }
+    
+    filter_Age(asd){
+        const result = []
+        for(const elem of this.#array){
+           if( elem.eletkor===asd){
+            result.push(elem)
+           }
         }
-        this.#updateCallback(resoult)
+    
+        this.#updatecallback(result)
     }
-
-}
-class dataTable{
+    }
+    
+    
+    
+    class Datatable { 
     /**
-     * @param {dataManager} dataManager
+     * @param {@Datamanager} datamanager
      */
-    constructor(dataManager){
-        const table  = document.createElement("table")
-        document.body.appendChild(table)
-        const header = document.createElement("thead")
-        table.appendChild(header)
-        const tbody = document.createElement("tbody")
-        table.appendChild(tbody)
-        dataManager.setUpateCallback((person) => {
-            tbody.innerHTML = ""
-            for(const prs of person){
-                const sor = document.createElement("tr")
-                tbody.appendChild(sor)
-                const cella = document.createElement("td")
-                cella.innerText = prs.nev
-                sor.appendChild(cella)
-                const cella2 = document.createElement("td")
-                cella.innerText = prs.eletkor
-                sor.appendChild(cella2)
-            }
-        })
-
+        constructor(datamanager){
+            const table = document.createElement("table")
+            document.body.appendChild(table)
+    
+            const thead = document.createElement("thead")
+            table.appendChild(thead)
+    
+            const tbody = document.createElement("tbody")
+            thead.appendChild(tbody)
+    
+            datamanager.setupdatecallback((persons)=>{
+                for(let elem of persons){
+                    const sor = document.createElement('tr')
+                    
+    
+                    const cella = document.createElement('td')
+                    cella.innerHTML=elem.nev
+                    sor.appendChild(cella)
+                    const cella1 = document.createElement('td')
+                    cella1.innerHTML=elem.eletkor
+                    sor.appendChild(cella1)
+                    tbody.appendChild(sor)
+                }
+            })
+        }
+    
         
     }
-}
-const dataManager_obj = new dataManager([{eletkor:18,nev:"Sándor"},{eletkor:20,nev:"Nem sándor"},{eletkor:17,nev:"Feri"}])
-const dataTable2 = new dataTable(dataManager_obj)
+    
+    const manager = new Datamanager([{nev:"Feri", eletkor: 17} ,{ nev:"Teri",eletkor:18},{nev:"Gábor",eletkor:18 }])
+    const table = new Datatable(manager)
+    
+    const input = document.createElement('input')
+    // input.addEventListener('input',(e))
+    const input2 = document.createElement("input")
+    document.body.appendChild(input2)
+    input2.type = "file";
+    input2.addEventListener('change',(e)=>{
+        const file = e.target.files[0];
+        const fileOlvas = new FileReader()
+        fileOlvas.readAsText(file)
+        fileOlvas.onload = (e) => {
+            const file_content = fileOlvas.result;
+            const split_names = file_content.split("\n")
+            for(const item of split_names){
+                const task = item.split(";")
+                let pers = {
+                    nev: task[0],
+                    eletkor: Number(task[1])
+                }
+                let manedger = new Datamanager([pers])
+                let table = new Datatable(manedger)
+            }
+        }
+    })
