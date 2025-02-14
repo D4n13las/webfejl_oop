@@ -39,11 +39,17 @@ class Area{
  */
 class DetailsArea extends Area{
     /**
-     * 
+     * @param {Mandeger} manadger
      * @param {string} className a css osztaly 
      */
-    constructor(className){
+    constructor(className,manadger){
         super(className)
+        manadger.setSeleectCallBack((student) => {
+            this.div.innerHTML = ''
+            const detailsContainer = document.createElement("div")
+            detailsContainer.innerHTML = student.comment
+            this.div.appendChild(detailsContainer)
+        })
     }
 }
 /**
@@ -51,10 +57,32 @@ class DetailsArea extends Area{
  */
 class StudentArea extends Area{
     /**
-     * 
+     * @param {Mandeger} manadger manadger példány
      * @param {string} className a css osztaly 
      */
-    constructor(className){
+    constructor(className,manadger){
         super(className)
+        manadger.setAddCallBack((student) => {
+            const studentCard = document.createElement("div")
+            studentCard.className = "student-card"
+            const nameSpan = document.createElement("span")
+            nameSpan.textContent = student.name
+            nameSpan.style.color = student.bad ? 'red' : "black"
+            studentCard.appendChild(nameSpan)
+            studentCard.appendChild(document.createElement("br"))
+
+            const averageSpan = document.createElement("span")
+            averageSpan.textContent = student.avarage
+            studentCard.appendChild(averageSpan)
+            this.div.appendChild(studentCard)
+            studentCard.addEventListener("click",(e)=>{
+                const cardList = document.querySelectorAll(".student-card")
+                for(const card of cardList){
+                    card.className = "student-card"
+                }
+                e.currentTarget.classList.add("selected")
+                manager.select(student)
+            })
+        })
     }
 }
